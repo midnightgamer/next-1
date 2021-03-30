@@ -1,11 +1,11 @@
 import React from 'react';
+import {getAllEvents} from "../../dummy-data";
+import EventList from "../../components/Events/EventList";
 
 const Events = () => {
-
+    const events = getAllEvents();
     return (
-        <div>
-
-        </div>
+       <EventList items={events}/>
     );
 };
 
