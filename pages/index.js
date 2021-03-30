@@ -1,11 +1,22 @@
-import {getFeaturedEvents} from "../dummy-data";
+import {getFeaturedEvents} from "../helper/api-utils";
 import EvenList from "../components/Events/EventList";
 
-export default function Home() {
-    const featuredEvent = getFeaturedEvents();
+function Home(props) {
     return (
         <div>
-            <EvenList items={featuredEvent}/>
+            <EvenList items={props.events}/>
         </div>
     )
 }
+
+
+export async function getStaticProps() {
+    const featuredEvent = await getFeaturedEvents();
+    return {
+        props: {
+            events: featuredEvent
+        }
+    }
+}
+
+export default Home;
