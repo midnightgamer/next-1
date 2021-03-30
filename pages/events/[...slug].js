@@ -1,20 +1,42 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useRouter} from "next/router";
-import {getFilteredEvents} from "../../helper/api-utils";
 import EventList from "../../components/Events/EventList";
 import ResultsTitle from "../../components/Events/results-title";
 import Button from "../../components/UI/Button";
 import ErrorAlert from "../../components/Icons/error-alert";
+import useSWR from "swr";
 
-const FilteredEvent = (props) => {
+const FilteredEvent = () => {
+    const [events, setEvent] = useState(null)
     const router = useRouter()
-    /*const filterData = router.query.slug;
-    if (!filterData) {
+
+    const filterData = router.query.slug;
+    const {data, error} = useSWR('https://delte-d402a-default-rtdb.firebaseio.com/events.json')
+    useEffect(() => {
+        if (data) {
+            const events = [];
+            for (const key in data) {
+                events.push({id: key, ...data[key]})
+            }
+            setEvent(events)
+        }
+    }, [data])
+
+
+    if (!events) {
         return <p className={'center'}>Loading..</p>;
     }
     const year = +filterData[0];
-    const month = +filterData[1];*/
-    if (props.hasError) {
+    const month = +filterData[1];
+
+
+
+    if (isNaN(year) ||
+        isNaN(month) ||
+        year > 2030 ||
+        year < 2021 ||
+        month < 1 ||
+        month > 12) {
         return (
             <React.Fragment>
                 <ErrorAlert>
@@ -27,7 +49,11 @@ const FilteredEvent = (props) => {
         );
     }
 
-    const filteredEvents = props.events;
+    const filteredEvents = events.filter((event) => {
+        const eventDate = new Date(event.date);
+        return eventDate.getFullYear() === year && eventDate.getMonth() === month - 1;
+    });
+
 
     if (!filteredEvents || filteredEvents.length === 0) {
         return (
@@ -42,7 +68,7 @@ const FilteredEvent = (props) => {
         );
     }
 
-    const date = new Date(props.year, props.month - 1);
+    const date = new Date(year, month - 1);
 
     return (
         <React.Fragment>
@@ -51,38 +77,5 @@ const FilteredEvent = (props) => {
         </React.Fragment>
     );
 };
-
-export async function getServerSideProps(context) {
-    const {params} = context;
-    const filterData = params.slug;
-
-    const year = +filterData[0];
-    const month = +filterData[1];
-
-    if (
-        isNaN(year) ||
-        isNaN(month) ||
-        year > 2030 ||
-        year < 2021 ||
-        month < 1 ||
-        month > 12
-
-    ) {
-
-        return {
-            props: {hasError: true}
-        };
-    }
-
-    const filteredEvents = await getFilteredEvents({year, month});
-
-    return {
-        props: {
-            events: filteredEvents,
-            year: year,
-            month: month
-        }
-    }
-}
 
 export default FilteredEvent;
