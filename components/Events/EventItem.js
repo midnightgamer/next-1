@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from "next/link";
 import classes from './EventItem.module.css'
 import Button from "../UI/Button";
 import DateIcon from "../Icons/date-icon";
