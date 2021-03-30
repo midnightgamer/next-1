@@ -14,3 +14,9 @@ export async function getFeaturedEvents() {
     const allEvents = await getAllEvent();
     return allEvents.filter((event) => event.isFeatured);
 }
+
+
+export async function getEventById(id) {
+    const allEvents = await getAllEvent();
+    return allEvents.find((event) => event.id === id);
+}
