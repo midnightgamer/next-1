@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from "next/image";
 import classes from './EventItem.module.css'
 import Button from "../UI/Button";
 import DateIcon from "../Icons/date-icon";
@@ -16,7 +17,7 @@ const EventItem = (props) => {
     const exploreLink = `/events/${id}`
     return (
         <li className={classes.item} key={id}>
-            <img src={'/' + image} alt={title}/>
+            <Image src={'/' + image} alt={title} width={250} height={160}/>
             <div className={classes.content}>
                 <div className={classes.summary}>
                     <h2>{title}</h2>

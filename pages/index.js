@@ -1,9 +1,13 @@
 import {getFeaturedEvents} from "../helper/api-utils";
 import EvenList from "../components/Events/EventList";
+import Head from "next/head";
 
 function Home(props) {
     return (
         <div>
+            <Head>
+                <title>NextJS</title>
+            </Head>
             <EvenList items={props.events}/>
         </div>
     )

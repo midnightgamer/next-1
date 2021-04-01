@@ -5,6 +5,7 @@ import EventSummary from "../../components/EventDetailed/event-summary";
 import EventLogistics from "../../components/EventDetailed/event-logistics";
 import EventContent from "../../components/EventDetailed/event-content";
 import ErrorAlert from "../../components/Icons/error-alert";
+import Head from "next/head";
 
 const DetailedEvent = (props) => {
     const {event} = props;
@@ -14,6 +15,9 @@ const DetailedEvent = (props) => {
 
     return (
         <React.Fragment>
+            <Head>
+                <title>{event.title}</title>
+            </Head>
             <EventSummary title={event.title}/>
             <EventLogistics date={event.date} address={event.location} image={event.image} imageAlt={event.title}/>
             <EventContent>
